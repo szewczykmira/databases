@@ -1,0 +1,16 @@
+1.
+select * from przedmiot where nazwa like 'Matematyka%';
+
+-- 110 to Matematyka dyskretna M
+
+select * from semestr;
+
+-- 38 to semestr zimowy 2010/2011
+
+select * from przedmiot_semestr where kod_przed=110 and semestr_id=38;
+
+-- 4015
+
+select * from grupa where kod_przed_sem=4015 and rodzaj_zajec='c';
+
+select nazwisko from grupa, uzytkownik where grupa.kod_uz=uzytkownik.kod_uz and grupa.kod_przed_sem=4015 and grupa.rodzaj_zajec='c' order by name;
