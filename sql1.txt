@@ -22,3 +22,12 @@ select uzytkownik.imie||' '||uzytkownik.nazwisko from uzytkonik, wybor, grupa wh
 3.
 (select extract(day from data) from wybor join grupa using(kod_grupy) where kod_przed_sem=4015 order by data limit 1) union all (select extract(day from data) from wybor join grupa using(kod_grupy) where kod_przed_sem=4014 order by data asc limit 1);
 
+4.
+select distinct rodzaj from przedmiot;
+(załóżmy, że o to obowiązkowy)
+
+select distinct rodzaj_zajec from grupa; 
+(zakładamy, ze r to repozytorium)
+
+select nazwa from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) where rodzaj='o' and rodzaj_zajec='r';
+wychodzi 0.........1
