@@ -19,3 +19,6 @@ select nazwisko from grupa, uzytkownik where grupa.kod_uz=uzytkownik.kod_uz and 
 
 select uzytkownik.imie||' '||uzytkownik.nazwisko from uzytkonik, wybor, grupa where wybor.kod_grupy=grupa.kod_grupy and wybor.kod_uz=uzytkownik.kod_uz and grupa.kod_przed_sem=4015 and grupa.rodzaj_zajec='w' order by wybor.data;
 
+3.
+(select extract(day from data) from wybor join grupa using(kod_grupy) where kod_przed_sem=4015 order by data limit 1) union all (select extract(day from data) from wybor join grupa using(kod_grupy) where kod_przed_sem=4014 order by data asc limit 1);
+
