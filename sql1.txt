@@ -42,3 +42,11 @@ select * from uzytkownik where nazwisko='Urban';
 kod_uz=2332
 select * from grupa where kod_uz=2332;
 select nazwa from grupa join przedmiot_semestr using(kod_przed_sem) join przedmiot using(kod_przed) where kod_uz=2332 order by nazwa;
+
+7.
+select count(*) from uzytkownik where nazwisko like 'Kabacki%';
+
+8.
+select * from przedmiot where nazwa='Algorytmy i struktury danych (M)';
+kod_przed = 37
+with w as (select w.kod_uz, g.kod_grupy, ps.kod_przed_sem from grupa g, przedmiot_semestr ps, wybor w where w.kod_grupy=g.kod_grupy and ps.kod_przed_sem=g.kod_przed_sem and kod_przed=37) select distinct a.kod_uz from c a, c b where a.kod_uz=b.kod_uz and a.kod_przed_sem <> b.kod_przed_sem;
