@@ -37,3 +37,8 @@ wychodzi 0.........1
 select * from semestr where nazwa like '%zimowy%';
 select distinct g.kod_uz from przedmiot p, semestr s, przedmiot_semestr ps, grupa g where p.kod_przed=ps.kod_przed and s.semestr_id=ps.semestr_id and s.nazwa like '%zimowy%' and p.rodzaj='o' and ps.kod_przed_sem=g.kod_przed_sem and g.rodzaj='c';
 
+6.
+select * from uzytkownik where nazwisko='Urban';
+kod_uz=2332
+select * from grupa where kod_uz=2332;
+select nazwa from grupa join przedmiot_semestr using(kod_przed_sem) join przedmiot using(kod_przed) where kod_uz=2332 order by nazwa;
