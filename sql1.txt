@@ -29,5 +29,11 @@ select distinct rodzaj from przedmiot;
 select distinct rodzaj_zajec from grupa; 
 (zakładamy, ze r to repozytorium)
 
-select nazwa from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) where rodzaj='o' and rodzaj_zajec='r';
+select count(*) from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) where rodzaj='o' and rodzaj_zajec='r';
 wychodzi 0.........1
+
+5.
+
+select * from semestr where nazwa like '%zimowy%';
+select distinct g.kod_uz from przedmiot p, semestr s, przedmiot_semestr ps, grupa g where p.kod_przed=ps.kod_przed and s.semestr_id=ps.semestr_id and s.nazwa like '%zimowy%' and p.rodzaj='o' and ps.kod_przed_sem=g.kod_przed_sem and g.rodzaj='c';
+
