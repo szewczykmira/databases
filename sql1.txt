@@ -14,3 +14,8 @@ select * from przedmiot_semestr where kod_przed=110 and semestr_id=38;
 select * from grupa where kod_przed_sem=4015 and rodzaj_zajec='c';
 
 select nazwisko from grupa, uzytkownik where grupa.kod_uz=uzytkownik.kod_uz and grupa.kod_przed_sem=4015 and grupa.rodzaj_zajec='c' order by name;
+
+2.
+
+select uzytkownik.imie||' '||uzytkownik.nazwisko from uzytkonik, wybor, grupa where wybor.kod_grupy=grupa.kod_grupy and wybor.kod_uz=uzytkownik.kod_uz and grupa.kod_przed_sem=4015 and grupa.rodzaj_zajec='w' order by wybor.data;
+
