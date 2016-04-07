@@ -49,4 +49,32 @@ select count(*) from uzytkownik where nazwisko like 'Kabacki%';
 8.
 select * from przedmiot where nazwa='Algorytmy i struktury danych (M)';
 kod_przed = 37
-with w as (select w.kod_uz, g.kod_grupy, ps.kod_przed_sem from grupa g, przedmiot_semestr ps, wybor w where w.kod_grupy=g.kod_grupy and ps.kod_przed_sem=g.kod_przed_sem and kod_przed=37) select distinct a.kod_uz from c a, c b where a.kod_uz=b.kod_uz and a.kod_przed_sem <> b.kod_przed_sem;
+with w as (select w.kod_uz, g.kod_grupy, ps.kod_przed_sem from grupa g, przedmiot_semestr ps, wybor w where w.kod_grupy=g.kod_grupy and ps.kod_przed_sem=g.kod_przed_sem and kod_przed=37) select distinct a.kod_uz from w a, w b where a.kod_uz=b.kod_uz and a.kod_przed_sem <> b.kod_przed_sem;
+
+9.
+with pr as (select semestr_id, kod_przed_sem from przedmiot_semestr join przedmiot using(kod_przed) where rodzaj='o') select count(pr.kod_przed_sem), semestr_id from pr, semestr s where pr.semestr_id=s.semestr_id group by s.semestr_id order by count(pr.kod_przed_sem) limit 1;
+
+10.
+select * from semestr where nazwa like '%zimowy%';
+(38)
+
+select * from przedmiot where nazwa like 'Logika%';
+(39)
+
+select * from przedmiot_semestr where kod_przed=39 and semestr_id=38;
+4041
+
+select * from grupa where kod_przed_sem=4041 and rodzaj_zajec='c';
+
+11.
+with pr as (select semestr_id, kod_przed_sem from przedmiot_semestr join przedmiot using(kod_przed) where rodzaj='o') select count(pr.kod_przed_sem), semestr_id from pr, semestr s where pr.semestr_id=s.semestr_id group by s.semestr_id order by count(pr.kod_przed_sem) desc limit 1;
+
+12.
+select * from przedmiot where nazwa like '%(ang.)%';
+
+13.
+select * from semestr where nazwa like '%zimowy%';
+(32)
+
+select * from przedmiot_semestr where semestr_id=32;
+
