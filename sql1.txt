@@ -78,3 +78,27 @@ select * from semestr where nazwa like '%zimowy%';
 
 select * from przedmiot_semestr where semestr_id=32;
 
+14.
+select distinct rodzaj from przedmiot;
+(select kod_przed from przedmiot where rodzaj='k') except (select distinct p.kod_przed from przedmiot p, przedmiot_semestr ps where p.rodzaj='k' and p.kod_przed=ps.kod_przed);
+
+15.
+select distinct rodzaj_zajec from grupa;
+select * from uzytkownik where imie like "Przemysława";
+(187)
+select * from grupa where rodzaj_zajec='c' and kod_uz=187;
+
+16.
+select * from przedmiot where nazwa like 'Logika%';
+(39)
+select * from uzytkownik where nazwisko like 'Charatonik%';
+(1584)
+select kod_przed_sem from przedmiot_semestr where kod_przed=39;
+select kod_grupy from grupa join przedmiot_semestr using(kod_przed) where kod_przed=39 and kod_uz=1584;
+
+17.
+To takie jak 8 tylko inna nazwa przedmiotu :)
+
+18.
+To nie to
+with u as (select kod_grupy from przedmiot_semestr join grupa using(kod_przed_sem) where semestr_id=27) select distinct kod_uz from u join wybor using(kod_grupy) intersect (to samo dla każdego kolejnego semestru);
