@@ -2,3 +2,9 @@
 select distinct u.kod_uz, imie, nazwisko from grupa join przedmiot_semestr using(kod_przed_sem) join semestr s using(semestr_id) join przedmiot using(kod_przed) join wybor using(kod_grupy) join uzytkownik u on(u.kod_przed=wybor.kod_uz) where przedmiot.nazwa like 'Algorytmy i struktury danych%' and u.kod_uz in (select uzytkownik.kod_uz from grupa join przedmiot_semestr using(kod_przed_sem) join semestr using (semestr_id) join przedmiot using(kod_przed) join wybor using(kod_grupy) join uzytkownik on (uzytkownik.kod_uz=wybor.kod_uz) where przedmiot.nazwa like 'Bazy danych%' and semestr_id>s.semestr_id);
 2.
 select distinct kod_uz, imie, nazwisko from grupa join przedmiot_semestr using(kod_przed_sem) join semestr s using(semestr_id) join przedmiot using(kod_przed) join wybor using(kod_grupy) join uzytkownik u on(u.kod_przed=wybor.kod_uz) where przedmiot.nazwa like 'Algorytmy i struktury danych%' and exists (select * from grupa join przedmiot_semestr using(kod_przed_sem) join semestr using(semestr_id) join przedmiot using(kod_przed) join wybor using(kod_grupy) join uzytkownik on (uzytkownik.kod_uz=wybor.kod_uz) where przedmiot.nazwa like 'Bazy danych%' and uzytkownik.kod_uz=u.kod_uz and semestr_id>s.semestr_id);
+
+3.
+select distinct u.kod_uz, u.imie, u.nazwisko from grupa join uzytkownik u using(kod_uz) where rodzaj_zajec='w' and not exists (select kod_uz from grupa join uzytkownik using(kod_uz) where rodzaj_zajec='s' and kod_uz=u.kod_uz);
+35
+4. 
+select distinct u.kod_uz, u.imie, u.nazwisko from grupa join uzytkownik u using(kod_uz) where rodzaj_zajec='w' except select kod_uz, imie, nazwisko from grupa join uzytkownik using(kod_uz) where rodzaj_zajec='s';
