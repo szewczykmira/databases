@@ -14,3 +14,6 @@ select przedmiot.nazwa, count(wybor.kod_uz) from przedmiot_semestr join grupa us
 
 6.
 with baz as (select distinct wybor.kod_uz from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) join wybor using(kod_grupy) where przedmiot.nazwa like 'Bazy danych' and semestr.nazwa like 'Semestr letni 2010/2011'), nets as (select distinct wybor.kod_uz from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) join wybor using(kod_grupy) where przedmiot.nazwa like 'Sieci komputerowe' and semestr.nazwa like 'Semestr letni 2010/2011') select kod_uz from baz where kod_uz not in (select kod_uz from nets) union select kod_uz from nets where kod_uz not in (select kod_uz from baz);
+
+7.
+with u as (select grupa.kod_uz from grupa join wybor using(kod_grupy) group by kod_grupy having count(wybor.*)>max_osoby) select kod_uz, imie, nazwisko from uzytkownik where kod_uz in (select kod_uz from u);
