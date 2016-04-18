@@ -8,3 +8,6 @@ select distinct u.kod_uz, u.imie, u.nazwisko from grupa join uzytkownik u using(
 35
 4. 
 select distinct u.kod_uz, u.imie, u.nazwisko from grupa join uzytkownik u using(kod_uz) where rodzaj_zajec='w' except select kod_uz, imie, nazwisko from grupa join uzytkownik using(kod_uz) where rodzaj_zajec='s';
+
+5.
+select przedmiot.nazwa, count(wybor.kod_uz) from przedmiot_semestr join grupa using(kod_przed_sem) join wybor using(kod_grupy) right join przedmiot using(kod_przed) where rodzaj='k' and nazwa like '%az%' group by przedmiot.nazwa;
