@@ -20,3 +20,5 @@ with u as (select grupa.kod_uz from grupa join wybor using(kod_grupy) group by k
 
 8.
 with w as (select kod_grupy from grupa where rodzaj_zajec='w' and kod_przed_sem in (select kod_przed_sem from przedmiot_semestr join przedmiot using(kod_przed) where rodzaj='p')), c as (select kod_grupy, count(*) from wybor where kod_grupy in (select kod_grupy from w) group by kod_grupy order by count desc limit 1) select nazwa from przedmiot join przedmiot_semestr using(kod_przed) join grupa using(kod_przed_sem) where kod_grupy in (select kod_grupy from c);
+
+
