@@ -1,0 +1,50 @@
+1. 1,
+ create domain semestry as text not null check (value in ('zimowy', 'letni'));
+
+1.2
+create sequence numer_semestru;
+select setval('numer_semestru', max(semestr_id)) from semestr;
+alter table semestr alter column semestr_id set default nextval('numer_semestru');
+alter sequence numer_semestru owned by semestr.semestr_id;
+
+1.3
+alter table semestr add column semestr semestry default 'zimowy';
+alter table semestr add column rok char(9);
+
+1.4
+update semestr set semestr='letni' where nazwa like '%letni%';
+update semestr set rok = substring(nazwa from position('/' in nazwa) -4 for 9);
+
+1.5
+alter table semestr drop column nazwa;
+
+1.6
+alter table semestr alter column semestr drop default;
+ALTER TABLE semestr ALTER COLUMN semestr SET DEFAULT
+ CASE WHEN extract(month FROM current_date) BETWEEN 1 AND 6
+   THEN 'letni' ELSE 'zimowy'
+ END;
+
+ALTER TABLE semestr ALTER COLUMN rok SET DEFAULT
+ CASE WHEN extract(month FROM current_date) BETWEEN 1 AND 6
+   THEN extract(year FROM current_date)-1||'/'||extract(year FROM current_date)
+   ELSE extract(year FROM current_date)||'/'||extract(year FROM current_date)+1
+ END;
+
+2.
+insert into semestr(semestr, rok) values ('zimowy', '2013/2014'), ('letni', '2013/2014');
+2.1
+create sequence numer_przedmiot_semestr;
+select setval('numer_przedmiot_semestr', max(kod_przed_sem)) from przedmiot_semestr;
+alter table przedmiot_semestr alter column kod_przed_sem set default nextval('numer_przedmiot_semestr');
+alter sequence numer_przedmiot_semestr owned by przedmiot_semestr.kod_przed_sem;
+
+create sequence numer_grupy;
+select setval('numer_grupy', max(kod_grupy)) from grupa;
+alter table grupa alter column kod_grupy set default nextval('numer_grupy');
+alter sequence numer_grupy owned by grupa.kod_grupy;
+2.2
+insert into przedmiot_semestr(semestr_id, kod_przed, strona_domowa, angielski) from semestr s1 przedmiot p join przedmiot_semestr ps using(kod_przed) join semestr s using(semestr_id) where rodzaj in ('p','o') and s.rok='2010/2011' and s.semestr=s1.semestr and s1.rok='2013/2014';
+
+2.3
+
