@@ -93,3 +93,9 @@ insert into oferta(kod_firmy, semestr_id, liczba_miejsc) select kod_firmy, semes
 5.5
 create table praktyki(student int not null references student, opiekun int not null references pracownik, oferta int not null references oferta);
 
+6.1
+create view plan_zajec(kod_stud, nazwisko_stud, semestr_id, rok, semestr, kod_przed, nazwa_przed, termin, sala, kod_prac, nazwisko_prac) as select u1.kod_uz, u1.nazwisko, s.semestr, s.rok, s.semestr, p.kod_przed, p.nazwa, termin, sala, u2.kod_uz, u2.nazwisko from student u1 join wybor using(kod_uz) join grupa using(kod_grupy) join pracownik u2 on(grupa.kod_uz=u2.kod_uz) join przedmiot_semestr using(kod_przed_sem) join przedmiot p using(kod_przed) join semestr s using (semestr_id);
+
+6.2
+ select nazwisko_stud, rok, semestr, kod_przed, termin, sala, nazwisko_prac from plan_zajec where kod_stud=3830;
+
