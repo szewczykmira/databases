@@ -47,4 +47,23 @@ alter sequence numer_grupy owned by grupa.kod_grupy;
 insert into przedmiot_semestr(semestr_id, kod_przed, strona_domowa, angielski) from semestr s1 przedmiot p join przedmiot_semestr ps using(kod_przed) join semestr s using(semestr_id) where rodzaj in ('p','o') and s.rok='2010/2011' and s.semestr=s1.semestr and s1.rok='2013/2014';
 
 2.3
+alter table grupa alter column kod_uz drop not null;
+insert into grupa(kod_przed_sem, max_osoby, rodzaj_zajec) select kod_przed_sem, 100, 'w' from przedmiot_semestr join semestr using(semestr_id) where rok='2013/2014';
+
+3.1
+create table pracownik (like uzytkownik);
+alter table pracownik drop column semestr;
+alter table pracownik add constraint pk_pracownik primary key(kod_uz);
+
+3.2
+insert into pracownik(kod_uz, imie, nazwisko) select kod_uz, imie, nazwisko from uzytkownik where kod_uz in (select kod_uz from grupa);
+
+3.3
+insert into student(kod_uz, imie, nazwisko) select kod_uz, imie, nazwisko from uzytkownik where kod_uz in (select kod_uz from wybor);
+
+3.4
+alter table wybor drop constraint fk_wybor_uz;
+alter table wybor add constraint fk_wybor_st foreign_key(kod_uz) references student(kod_uz) deferrable;
+alter table grupa drop constraint fk_grupa_uz;
+alter table grupa add constraint fk_grupa_pr foreign key(kod_uz) references pracownik(kod_uz) deferrable;
 
