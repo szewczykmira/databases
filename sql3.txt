@@ -67,3 +67,29 @@ alter table wybor add constraint fk_wybor_st foreign_key(kod_uz) references stud
 alter table grupa drop constraint fk_grupa_uz;
 alter table grupa add constraint fk_grupa_pr foreign key(kod_uz) references pracownik(kod_uz) deferrable;
 
+4.1
+create domain rodzaje_zajec as char(1) not null check (value in ('w', 'c', 'e', 'P', 'C', 'p', 'r', s));
+
+4.2
+alter table grupa alter column rodzaj_zajec type rodzaje_zajec;
+
+4.3
+create view obsada_zajec_view(prac_kod, prac_nazwisko, przed_kod, przed_nazwa, rodzaj_zajec, liczba_grup, liczba_studentow) as select pr.kod_uz, pr.nazwisko, p.kod_przed, p.nazwa, rodzaj_zajec, count(distinct kod_grupy), count(w.kod_uz) from pracownik pr join grupa using(kod_uz) join wybor using(kod_grupy) join przedmiot_semestr using(kod_przed_sem) join przedmiot p using(kod_przed) group by pr.kod_uz, nazwisko, p.kod_przed, nazwa, rodzaj_zajec;
+
+4.4
+create table obsada_zajec_tab(prac_kod int, prac_nazwisko text, przed_kod int, przed_nazwa text, rodzaj_zajec rodzaje_zajec, liczba_grup bigint, liczba_studentow bigint);
+insert into obsada_zajec_tab select pr.kod_uz, pr.nazwisko, p.kod_przed, p.nazwa, rodzaj_zajec, count(distinct kod_grupy), count(w.kod_uz) from pracownik pr join grupa using(kod_uz) join wybor w using(kod_grupy) join przedmiot_semestr using(kod_przed_sem) join przedmiot p using(kod_przed) group by pr.kod_uz, nazwisko, p.kod_przed, nazwa, rodzaj_zajec;
+
+5.1 
+create table firma(kod_firmy serial primary_key, nazwa text not null, adres text not null, kontakt text not null);
+
+5.2
+insert into firma(nazwa, adres, kontakt) values ('SNS', 'Wrocław', 'H. Kloss'), ('BIT', 'Kraków', 'R. Bruner'), ('MIT', 'Berlin', 'J.Kos');
+
+5.3
+create table oferta(kod_oferty serial primary key, kod_firmy int not null references firma(kod_firmy), semestr_id int references semestr(semestr_id), liczba_miejsc int);
+5.4
+insert into oferta(kod_firmy, semestr_id, liczba_miejsc) select kod_firmy, semestr_id, 3 from firma, semestr where firma.nazwa='SNS' and rok='2013/2014' and semestr='letni';
+5.5
+create table praktyki(student int not null references student, opiekun int not null references pracownik, oferta int not null references oferta);
+
