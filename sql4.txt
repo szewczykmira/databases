@@ -1,0 +1,10 @@
+1.1.
+create function pierwszy_zapis(int, int) returns wybor.data%TYPE as $X$ select wybor.data from wybor join grupa using(kod_grupy) join przedmiot_semestr using(kod_przed_sem) where wybor.kod_uz=$1 and semestr_id=$2; $X$ language sql immutable;
+
+1.2.
+select distinct kod_uz, pierwszy_zapis(u.kod_uz, semestr_id) from uzytkownik join wybor using(kod_uz) join grupa using(kod_grupy) join przedmiot_semestr using(kod_przed_sem) join semestr using(semestr_id) where u.nazwisko like 'A%' and semestr.nazwa='Semestr zimowy 2010/2011' order by 2;
+
+2
+create type plan_zajec_typ as (nazwa text, rodzaj_zajec char, termin text, sala text, liczba_osob int);
+create function plan_zajec(int, int) returns setof plan_zajec_typ as $X$ select p.nazwa::text, g.rodzaj_zajec::char, g.termin::text, g.sala::text, count(*)::int from przedmiot p join przedmiot_semestr ps using(kod_przed_sem) join grupa using(kod_grupy) join semestr s using(semestr_id) where g.kod_uz=$1 and semestr_id=$2 group by p.nazwa, g.rodzaj_zajec, g.termin, g.sala; $X$ language sql;
+select plan_zajec(187, 39);
